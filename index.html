@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>terrain</title>
+    <style type="text/css">
+        canvas {
+            display: block;
+        }
+        
+        html {
+            overflow: hidden;
+            background: linear-gradient(#e4e0ba, #f7d9aa);
+            margin: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://threejs.org/build/three.js"></script>
+    <script src="https://unpkg.com/three@0.87.1/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://unpkg.com/three@0.87.1/examples/js/loaders/GLTFLoader.js"></script>
+
+    <script type="text/javascript">
+        ////////////////////////////////////////
+        const scene = new THREE.Scene();
+
+        const camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 800);
+
+        var renderer = new THREE.WebGLRenderer({
+            antialias: true
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const geometry = new THREE.BoxGeometry();
+        const material = new THREE.MeshBasicMaterial({
+            color: 0x00ff00
+        });
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        var loader = new THREE.GLTFLoader();
+        loader.crossOrigin = true;
+        loader.load('../models/scene.gltf', function(data) {
+
+
+            var object = data.scene;
+            object.position.set(0, 0, 0);
+
+            //object.position.y = - 95;
+            scene.add(object);
+            console.log(data.scene.children[0])
+                //, onProgress, onError );
+        });
+    </script>
+</body>
+
+</html>
