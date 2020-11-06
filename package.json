@@ -5,7 +5,8 @@
     "private": "true",
     "dependencies": {
         "lodash": "^4.17.20",
-        "three": "^0.122.0"
+        "three": "^0.122.0",
+        "webpack-dev-server": "^3.11.0"
     },
     "devDependencies": {
         "webpack": "^5.4.0",
@@ -16,5 +17,7 @@
     },
     "keywords": [],
     "author": "",
-    "license": "ISC"
+    "license": "ISC",
+    "start": "webpack-dev-server --mode development",
+    "build": "webpack --mode production"
 }
