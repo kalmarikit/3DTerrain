@@ -107,6 +107,10 @@ function onClick(event) {
             pano.openNext("{node4}");
             console.log(element.object.name);
         }
+        if (element.object.name === "Line063_1") {
+            pano.openNext("{node5}");
+            console.log(element.object.name);
+        }
     });
 }
 
