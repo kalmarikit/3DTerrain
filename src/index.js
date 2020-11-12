@@ -1,7 +1,14 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { MeshLine, MeshLineMaterial, MeshLineRaycast } from 'three.meshline';
 
+
+function clampNumber(num, a, b) {
+    return Math.max(Math.min(num, Math.max(a, b)), Math.min(a, b));
+}
+
+var clock = new THREE.Clock();
 
 const scene = new THREE.Scene();
 
@@ -13,6 +20,7 @@ var renderer = new THREE.WebGLRenderer({
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setClearColor(0xC5C5C3);
 renderer.setPixelRatio(window.devicePixelRatio);
+renderer.gammaOutput = true;
 document.body.appendChild(renderer.domElement);
 
 const geometry = new THREE.BoxGeometry();
@@ -57,6 +65,8 @@ controls.update();
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
+var QuardsMeshes = new Array();
+
 function onClick(event) {
 
     // calculate mouse position in normalized device coordinates
@@ -82,9 +92,15 @@ window.addEventListener('click', onClick, false);
 
 function animate() {
     requestAnimationFrame(animate);
-
+    const time = performance.now();
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
+    QuardsMeshes.forEach(function(element) {
+        
+        element.scale.x = clampNumber(time % 500, 100, 300) / 100;
+        element.scale.y = clampNumber(time % 500, 100, 300) / 100;
+        element.scale.z = clampNumber(time % 500, 100, 300) / 100;
+    })
     controls.update();
     renderer.render(scene, camera);
 }
@@ -92,7 +108,7 @@ animate();
 
 var loader = new GLTFLoader();
 loader.crossOrigin = true;
-loader.load('../models/ergaki/Ergaki_1_1.gltf', function(data) {
+loader.load('../models/GLTF_1/PBR - Metallic Roughness.gltf', function(data) {
 
 
     var object = data.scene;
@@ -101,6 +117,14 @@ loader.load('../models/ergaki/Ergaki_1_1.gltf', function(data) {
 
     //object.position.y = - 95;
     scene.add(object);
-    console.log(data.scene.children[0])
-        //, onProgress, onError );
+    let root = data.scene.children[0];
+    root.children.forEach(function(element) {
+        console.log(element.name);
+        if (element.name.includes('Quad')) {
+            console.log(element.name);
+            QuardsMeshes.push(element);
+        }
+    })
+    console.log(QuardsMeshes);
+    //, onProgress, onError );
 });
