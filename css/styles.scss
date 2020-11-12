@@ -1,2 +1,41 @@
-canvas { display: block; }
-html { overflow: hidden; background: #000; }
+canvas {
+    display: overflow;
+}
+
+html {
+    overflow: hidden;
+    height: 100%;
+    background: #000;
+}
+
+body {
+    height: 100%;
+    margin: 0px;
+    overflow: hidden;
+    display: unset;
+    /* disable scrollbars */
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    /* remove highlight on tab for iOS/Android */
+}
+
+#Map {
+    position: absolute;
+    margin: auto;
+    z-index: 9999;
+}
+
+#container {
+    position: absolute;
+}
+
+
+/* fix for scroll bars on webkit & >=Mac OS X Lion */
+
+ ::-webkit-scrollbar {
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 0.75em;
+}
+
+ ::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5);
+}

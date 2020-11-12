@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { MeshLine, MeshLineMaterial, MeshLineRaycast } from 'three.meshline';
 import { configure } from './MapManager';
+import { random } from 'lodash';
 
 
 function clampNumber(num, a, b) {
@@ -18,11 +19,13 @@ const camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerH
 var renderer = new THREE.WebGLRenderer({
     antialias: true
 });
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
 renderer.setClearColor(0xC5C5C3);
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.gammaOutput = true;
-document.body.appendChild(renderer.domElement);
+renderer.domElement.id = "Map";
+//document.body.appendChild(renderer.domElement);
+document.body.prepend(renderer.domElement);
 
 const geometry = new THREE.BoxGeometry();
 const material = new THREE.MeshPhongMaterial({
@@ -72,18 +75,37 @@ function onClick(event) {
 
     // calculate mouse position in normalized device coordinates
     // (-1 to +1) for both components
-
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    let canvasBounds = renderer.getContext().canvas.getBoundingClientRect();
+    mouse.x = ((event.clientX - canvasBounds.left) / (canvasBounds.right - canvasBounds.left)) * 2 - 1;
+    mouse.y = -((event.clientY - canvasBounds.top) / (canvasBounds.bottom - canvasBounds.top)) * 2 + 1;
+    // mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    // mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     raycaster.setFromCamera(mouse, camera);
 
-    const intersects = raycaster.intersectObjects(scene.children);
+    const intersects = raycaster.intersectObjects(scene.children, true);
 
     intersects.forEach(function(element) {
+        console.log(element.object.name);
         if (element.object.id == cube.id) {
             var win = window.open('https://www.youtube.com/', '_blank');
             win.focus();
             console.log('redirect');
+        }
+        if (element.object.name === "Line061_1") {
+            pano.openNext("{node3}");
+            console.log(element.object.name);
+        }
+        if (element.object.name === "Line064_1") {
+            pano.openNext("{node2}");
+            console.log(element.object.name);
+        }
+        if (element.object.name === "Line059_1") {
+            pano.openNext("{node1}");
+            console.log(element.object.name);
+        }
+        if (element.object.name === "Line060_1") {
+            pano.openNext("{node4}");
+            console.log(element.object.name);
         }
     });
 }
@@ -98,9 +120,9 @@ function animate() {
     cube.rotation.y += 0.01;
     QuardsMeshes.forEach(function(element) {
 
-        element.scale.x = clampNumber(time % 500, 100, 300) / 100;
-        element.scale.y = clampNumber(time % 500, 100, 300) / 100;
-        element.scale.z = clampNumber(time % 500, 100, 300) / 100;
+        // element.scale.x = clampNumber(time % 500, 100, 300) / 100;
+        // element.scale.y = clampNumber(time % 500, 100, 300) / 100;
+        // element.scale.z = clampNumber(time % 500, 100, 300) / 100;
     })
     controls.update();
     renderer.render(scene, camera);
