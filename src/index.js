@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { MeshLine, MeshLineMaterial, MeshLineRaycast } from 'three.meshline';
+import { configure } from './MapManager';
 
 
 function clampNumber(num, a, b) {
@@ -96,7 +97,7 @@ function animate() {
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
     QuardsMeshes.forEach(function(element) {
-        
+
         element.scale.x = clampNumber(time % 500, 100, 300) / 100;
         element.scale.y = clampNumber(time % 500, 100, 300) / 100;
         element.scale.z = clampNumber(time % 500, 100, 300) / 100;
