@@ -4,7 +4,7 @@
     "description": "",
     "private": "true",
     "dependencies": {
-        "lodash": "^4.17.20",
+        "lodash": "^4.17.21",
         "three": "^0.122.0",
         "three.meshline": "^1.3.0",
         "webpack-dev-server": "^3.11.0"
